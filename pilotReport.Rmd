@@ -113,7 +113,7 @@ BGrand_means <- Sub_means %>%
             n = n())
 BSub_means
 BGrand_means
-#Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29)- Check
+#Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29)- CHECK
 
 #SSS
 SSS_Sub_means <- dataGW %>%
@@ -130,7 +130,8 @@ SSS_Grand_means <- SSS_Sub_means %>%
 
 SSS_Sub_means
 SSS_Grand_means
-# "Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)" Check
+
+# "Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)" CHECK
 
 
 ```
@@ -145,6 +146,7 @@ options(contrasts=c("contr.sum","contr.poly")) #to adhere to the sum-to-zero con
 #BART
 tBART <- t.test(BART ~ Condition, data = dataGW, var.equal = TRUE)
 tBART
+#d = (M1−M2)/SD 
 #t(78) = 2.63, p = .01 Check
 
 #SSS
@@ -171,10 +173,28 @@ summary(aov_STAI)
 
 #These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66 CHECK
 
-#time of measurement, F(2,156 = 2.37, p = .10, ? I found a significant effect of time of measurement in my analysis F(2,156 = 4.22 p = 0.02)
+#time of measurement, F(2,156 = 2.37, p = .10, ********? I found a significant effect of time of measurement in my analysis F(2,156 = 4.22 p = 0.02)
 
-#or an interaction between the two, F(2, 156) = 1.18, p = .31 #check
+#or an interaction between the two, F(2, 156) = 1.18, p = .31 CHECK
 
+corgender <- cor.test(x=dataGW$BART, y=dataGW$Sex)
+corgender
+
+corrFreq <- cor.test(x=dataGW$BART, y=dataGW$Cycling_Frequency, method = 'spearman', exact = FALSE)
+corrFreq
+
+dataGW$Helmet_Use_Likelihood[dataGW$Cycling_Frequency == 1] <- NA
+dataGW_new <- dataGW$Helmet_Use_Likelihood[!is.na(dataGW$Helmet_Use_Likelihood)]
+
+corrHel <- cor.test(x=dataGW$BART, y=dataGW$Helmet_Use_Likelihood, method = 'spearman', exact=FALSE)
+corrHel
+
+ 
+#There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, CHECK
+
+#bicycling experience (ρ = .12, p = .27) CHECK
+
+#and extent of helmet use when bicycling (ρ = .06, p = .60) CHECK
 
 ```
 
@@ -192,20 +212,20 @@ Insufficient_Information_Errors <- 0 # how many discrete insufficient informatio
 
 # Assess the causal locus (discrete reproducibility issues) of any reproducibility errors. Note that there doesn't necessarily have to be a one-to-one correspondance between discrete reproducibility issues and reproducibility errors. For example, it could be that the original article neglects to mention that a Greenhouse-Geisser correct was applied to ANOVA outcomes. This might result in multiple reproducibility errors, but there is a single causal locus (discrete reproducibility issue).
 
-locus_typo <- NA # how many discrete issues did you encounter that related to typographical errors?
-locus_specification <- NA # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
-locus_analysis <- NA # how many discrete issues did you encounter that related to errors in the authors' original analyses?
-locus_data <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
-locus_unidentified <- NA # how many discrete issues were there for which you could not identify the cause
+locus_typo <- 0 # how many discrete issues did you encounter that related to typographical errors?
+locus_specification <- 0 # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
+locus_analysis <- 0 # how many discrete issues did you encounter that related to errors in the authors' original analyses?
+locus_data <- 0 # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
+locus_unidentified <- 1 # how many discrete issues were there for which you could not identify the cause
 
 # How many of the above issues were resolved through author assistance?
 locus_typo_resolved <- NA # how many discrete issues did you encounter that related to typographical errors?
 locus_specification_resolved <- NA # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
 locus_analysis_resolved <- NA # how many discrete issues did you encounter that related to errors in the authors' original analyses?
 locus_data_resolved <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
-locus_unidentified_resolved <- NA # how many discrete issues were there for which you could not identify the cause
+locus_unidentified_resolved <- 1 # how many discrete issues were there for which you could not identify the cause
 
-Affects_Conclusion <- NA # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
+Affects_Conclusion <- FALSE # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
 ```
 
 [PILOT/COPILOT DOD NOT EDIT THE CODE CHUNK BELOW]
