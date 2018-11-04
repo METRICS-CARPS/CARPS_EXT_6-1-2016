@@ -38,10 +38,8 @@ completionDate <- NA # copilot insert the date of final report completion (after
 
 Specifically, you should attempt to reproduce all descriptive and inferential analyses reported in the text below and associated tables/figures:
 
-Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59 (Fig. 2a). Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b). These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66, time of measurement, F(2,156 = 2.37, p = .10, or an interaction between the two, F(2, 156) = 1.18, p = .31 (Fig. 2c). Note that we used the square roots of the anxiety scores for analyses because of the skew seen in Figure 2c. There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27), and extent of helmet use when bicycling (ρ = .06, p = .60)
-Note Make sure to use the original article for additional context and information about any necessary pre-processing steps. Also check for additional supplementary materials that may provide supporting documentation for analysis procedures."
+> Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59 (Fig. 2a). Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b). These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66, time of measurement, F(2,156 = 2.37, p = .10, or an interaction between the two, F(2, 156) = 1.18, p = .31 (Fig. 2c). Note that we used the square roots of the anxiety scores for analyses because of the skew seen in Figure 2c. There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27), and extent of helmet use when bicycling (ρ = .06, p = .60)"
 
-[PILOT copy and paste the target outcomes identified in targetOutcomes.md]  
 
 ------
 
@@ -63,6 +61,7 @@ library(knitr) # for kable table formating
 library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
 library(readxl) # import excel files
 library(CARPSreports) # custom report functions
+library(car)
 ```
 
 
@@ -75,21 +74,21 @@ reportObject <- data.frame(dummyRow = TRUE, reportedValue = NA, obtainedValue = 
 
 ```{r}
 dataGW <- read.csv("/Users/luiza/OneDrive/Documentos/GitHub/CARPS_EXT_6-1-2016/data/GambleWalkerPsychologicalScienceData.csv", sep = "\t")
+
+#tried to open with read_csv and use separate (sep = " ") to arrange data into the appropriate columns and rows. It didn't work. Without the "sep" argument the data would separate at . for the BART variable. Is there a way to do this with tidyverse?
 ```
 
 # Step 3: Tidy data
 
 ```{r}
-
-
-
+dataGW_long <- dataGW %>%
+  gather(STAI, rating, starts_with("STAI"))
+dataGW_long
 ```
 
 # Step 4: Run analysis
 
 ## Pre-processing
-
-[you can remove this section if no pre-processing is required]
 
 ```{r}
 dataGW$Condition <- as.factor(dataGW$Condition)
@@ -132,18 +131,51 @@ SSS_Grand_means <- SSS_Sub_means %>%
 SSS_Sub_means
 SSS_Grand_means
 # "Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)" Check
+
+
 ```
 
 ## Inferential statistics
 
+
 ```{r}
+
+options(contrasts=c("contr.sum","contr.poly")) #to adhere to the sum-to-zero convention for effect weights
+
+#BART
 tBART <- t.test(BART ~ Condition, data = dataGW, var.equal = TRUE)
 tBART
 #t(78) = 2.63, p = .01 Check
 
+#SSS
 TSSS <- t.test(SSS_total ~ Condition, data = dataGW)
 TSSS
 #Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b) Check
+
+#STAI
+
+STAI_labels <- c("Condition", "STAI_S_Y_PRE", "STAI_S_Y_DURING", "STAI_S_Y_POST")
+STAI_aov <- dataGW[STAI_labels]
+STAI_matrix <- as.matrix(STAI_aov[ ,2:4])
+STAI_model <- lm(sqrt(STAI_matrix) ~ 1 + Condition, STAI_aov)
+STAI_model
+
+STAI <- dataGW_long %>%
+  select("Condition", "STAI", "rating", "ID")
+
+STAI_time <- data.frame(as.factor(unique(STAI$STAI)))
+STAI_time <- unlist(STAI_time)
+aov_STAI <- Anova(STAI_model, idata = data.frame(STAI_time), idesign = ~STAI_time, type= "III")
+summary(aov_STAI)
+
+
+#These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66 CHECK
+
+#time of measurement, F(2,156 = 2.37, p = .10, ? I found a significant effect of time of measurement in my analysis F(2,156 = 4.22 p = 0.02)
+
+#or an interaction between the two, F(2, 156) = 1.18, p = .31 #check
+
+
 ```
 
 # Step 5: Conclusion
