@@ -1,0 +1,222 @@
+---
+title: "CARPS Reproducibility Report"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+[PILOT/COPILOT - TEXT IN SQUARE BRACKETS IS HERE FOR GUIDANCE. COPILOT PLEASE DELETE BEFORE KNITTING THE FINAL REPORT]
+
+# Report Details
+
+[PILOT/COPILOT ENTER RELEVANT REPORT DETAILS HERE]
+
+```{r}
+articleID <- CARPS_EXT_6-1-2016 
+reportType <- NA # specify whether this is the 'pilot' report or 'final' report
+pilotNames <- Luiza A. Santos 
+copilotNames <- Hannah Mieczkowski 
+pilotTTC <- NA # insert the pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
+copilotTTC <- NA # insert the co-pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
+pilotStartDate <- 11/03/18 # insert the pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+copilotStartDate <- NA # insert the co-pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+completionDate <- NA # copilot insert the date of final report completion (after any necessary rounds of author assistance) in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+```
+
+------
+
+#### Methods summary: 
+
+[PILOT/COPILOT write a brief summary of the methods underlying the target outcomes written in your own words]
+
+------
+
+#### Target outcomes: 
+
+"For this article you should focus on the findings reported in the results section.
+
+Specifically, you should attempt to reproduce all descriptive and inferential analyses reported in the text below and associated tables/figures:
+
+Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59 (Fig. 2a). Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b). These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66, time of measurement, F(2,156 = 2.37, p = .10, or an interaction between the two, F(2, 156) = 1.18, p = .31 (Fig. 2c). Note that we used the square roots of the anxiety scores for analyses because of the skew seen in Figure 2c. There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27), and extent of helmet use when bicycling (ρ = .06, p = .60)
+Note Make sure to use the original article for additional context and information about any necessary pre-processing steps. Also check for additional supplementary materials that may provide supporting documentation for analysis procedures."
+
+[PILOT copy and paste the target outcomes identified in targetOutcomes.md]  
+
+------
+
+[PILOT/COPILOT DO NOT CHANGE THE CODE IN THE CHUNK BELOW]  
+
+```{r global_options, include=FALSE}
+# sets up some formatting options for the R Markdown document
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+# Step 1: Load packages and prepare report object
+
+[PILOT/COPILOT Some useful packages are being loaded below. You can add any additional ones you might need too.]
+
+```{r}
+# load packages
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+library(CARPSreports) # custom report functions
+```
+
+
+```{r}
+# Prepare report object. This will be updated automatically by the reproCheck function each time values are compared
+reportObject <- data.frame(dummyRow = TRUE, reportedValue = NA, obtainedValue = NA, valueType = NA, percentageError = NA, comparisonOutcome = NA, eyeballCheck = NA)
+```
+
+# Step 2: Load data
+
+```{r}
+dataGW <- read.csv("/Users/luiza/OneDrive/Documentos/GitHub/CARPS_EXT_6-1-2016/data/GambleWalkerPsychologicalScienceData.csv", sep = "\t")
+```
+
+# Step 3: Tidy data
+
+```{r}
+
+
+
+```
+
+# Step 4: Run analysis
+
+## Pre-processing
+
+[you can remove this section if no pre-processing is required]
+
+```{r}
+dataGW$Condition <- as.factor(dataGW$Condition)
+```
+
+## Descriptive statistics
+
+```{r}
+summary(dataGW)
+
+#BART
+BSub_means <- dataGW %>%
+  group_by(ID, Condition) %>%
+  summarise(sub_mean = mean(BART), 
+            sub_sd = sd(BART),
+             n = n())
+
+BGrand_means <- Sub_means %>%
+  group_by(Condition) %>%
+  summarise(grand_mean = mean(sub_mean),
+            condition_sd = sd(sub_mean),
+            n = n())
+BSub_means
+BGrand_means
+#Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29)- Check
+
+#SSS
+SSS_Sub_means <- dataGW %>%
+  group_by(ID, Condition) %>%
+  summarise(sub_mean = mean(SSS_total), 
+            sub_sd = sd(SSS_total),
+             n = n())
+
+SSS_Grand_means <- SSS_Sub_means %>%
+  group_by(Condition) %>%
+  summarise(grand_mean = mean(sub_mean),
+            condition_sd = sd(sub_mean),
+            n = n())
+
+SSS_Sub_means
+SSS_Grand_means
+# "Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)" Check
+```
+
+## Inferential statistics
+
+```{r}
+tBART <- t.test(BART ~ Condition, data = dataGW, var.equal = TRUE)
+tBART
+#t(78) = 2.63, p = .01 Check
+
+TSSS <- t.test(SSS_total ~ Condition, data = dataGW)
+TSSS
+#Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b) Check
+```
+
+# Step 5: Conclusion
+
+
+[Please include a text summary describing your findings. If this reproducibility check was a failure, you should note any suggestions as to what you think the likely cause(s) might be.]
+  
+[PILOT/COPILOT ENTER RELEVANT INFORMATION BELOW]
+
+```{r}
+Author_Assistance = FALSE # was author assistance provided? (if so, enter TRUE)
+
+Insufficient_Information_Errors <- 0 # how many discrete insufficient information issues did you encounter?
+
+# Assess the causal locus (discrete reproducibility issues) of any reproducibility errors. Note that there doesn't necessarily have to be a one-to-one correspondance between discrete reproducibility issues and reproducibility errors. For example, it could be that the original article neglects to mention that a Greenhouse-Geisser correct was applied to ANOVA outcomes. This might result in multiple reproducibility errors, but there is a single causal locus (discrete reproducibility issue).
+
+locus_typo <- NA # how many discrete issues did you encounter that related to typographical errors?
+locus_specification <- NA # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
+locus_analysis <- NA # how many discrete issues did you encounter that related to errors in the authors' original analyses?
+locus_data <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
+locus_unidentified <- NA # how many discrete issues were there for which you could not identify the cause
+
+# How many of the above issues were resolved through author assistance?
+locus_typo_resolved <- NA # how many discrete issues did you encounter that related to typographical errors?
+locus_specification_resolved <- NA # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
+locus_analysis_resolved <- NA # how many discrete issues did you encounter that related to errors in the authors' original analyses?
+locus_data_resolved <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
+locus_unidentified_resolved <- NA # how many discrete issues were there for which you could not identify the cause
+
+Affects_Conclusion <- NA # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
+```
+
+[PILOT/COPILOT DOD NOT EDIT THE CODE CHUNK BELOW]
+
+```{r}
+reportObject <- reportObject %>%
+  filter(dummyRow == FALSE) %>% # remove the dummy row
+  select(-dummyRow) %>% # remove dummy row designation
+  mutate(articleID = articleID) %>% # add variables to report 
+  select(articleID, everything()) # make articleID first column
+
+# decide on final outcome
+if(any(reportObject$comparisonOutcome %in% c("MAJOR_ERROR", "DECISION_ERROR")) | Insufficient_Information_Errors > 0){
+  finalOutcome <- "Failure without author assistance"
+  if(Author_Assistance == T){
+    finalOutcome <- "Failure despite author assistance"
+  }
+}else{
+  finalOutcome <- "Success without author assistance"
+  if(Author_Assistance == T){
+    finalOutcome <- "Success with author assistance"
+  }
+}
+
+# collate report extra details
+reportExtras <- data.frame(articleID, pilotNames, copilotNames, pilotTTC, copilotTTC, pilotStartDate, copilotStartDate, completionDate, Author_Assistance, finalOutcome, Insufficient_Information_Errors, locus_typo, locus_specification, locus_analysis, locus_data, locus_unidentified, locus_typo_resolved, locus_specification_resolved, locus_analysis_resolved, locus_data_resolved, locus_unidentified_resolved)
+
+# save report objects
+if(reportType == "pilot"){
+  write_csv(reportObject, "pilotReportDetailed.csv")
+  write_csv(reportExtras, "pilotReportExtras.csv")
+}
+
+if(reportType == "final"){
+  write_csv(reportObject, "finalReportDetailed.csv")
+  write_csv(reportExtras, "finalReportExtras.csv")
+}
+```
+
+# Session information
+
+[This function will output information about the package versions used in this report:]
+
+```{r session_info, include=TRUE, echo=TRUE, results='markup'}
+devtools::session_info()
+```
