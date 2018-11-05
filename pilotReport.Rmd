@@ -6,29 +6,30 @@ output:
     toc_float: true
 ---
 
-[PILOT/COPILOT - TEXT IN SQUARE BRACKETS IS HERE FOR GUIDANCE. COPILOT PLEASE DELETE BEFORE KNITTING THE FINAL REPORT]
-
 # Report Details
 
-[PILOT/COPILOT ENTER RELEVANT REPORT DETAILS HERE]
-
 ```{r}
-articleID <- CARPS_EXT_6-1-2016 
-reportType <- NA # specify whether this is the 'pilot' report or 'final' report
-pilotNames <- Luiza A. Santos 
-copilotNames <- Hannah Mieczkowski 
-pilotTTC <- NA # insert the pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
-copilotTTC <- NA # insert the co-pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
+articleID <- 'CARPS_EXT_6-1-2016'
+reportType <- Pilot # specify whether this is the 'pilot' report or 'final' report
+pilotNames <- 'Luiza A. Santos'
+copilotNames <- 'Hannah Mieczkowski' 
+pilotTTC <- 400 # insert the pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
+copilotTTC <- 15 # insert the co-pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
 pilotStartDate <- 11/03/18 # insert the pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
-copilotStartDate <- NA # insert the co-pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
-completionDate <- NA # copilot insert the date of final report completion (after any necessary rounds of author assistance) in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+copilotStartDate <- 11/04/18 # insert the co-pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+completionDate <- 11/04/18 # copilot insert the date of final report completion (after any necessary rounds of author assistance) in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
 ```
 
 ------
 
 #### Methods summary: 
 
-[PILOT/COPILOT write a brief summary of the methods underlying the target outcomes written in your own words]
+Gamble and Walker (2016) tested whether unconscious perceptions of safety can increase risk-taking behavior, even when the safety measures are not directly related to the risk-taking domain. 
+
+Eighty participants were recruited to the study and were led to believe their eye movements were going to be recorded. After agreeing to participate, the were instructed to complete a series of computer-based measures. First, participants filled demographic questions (i.e., measures of age and gender) and completed the first of three measures of the State-Trait Anxiety Inventory (STAI) Form Y-1. Then, they were told the eye-tracking device had to be set up. Participants were then given an eye tracker that was either mounted to a helmet or to a baseball cap. In both the helmet and the cap conditions, the experimenter ran a fake calibration software to increase task’s believability. Participants then completed the Sensation Seeking Scale Form V (Zuckerman, Eysenck, & Eysenck, 1978) and were instructed to play the Balloon Analogue Risk Task (BART; Lejuez et al., 2002). In the BART, participants were told the more they pressed a certain computer key, the more an animated balloon would inflate, and the more fictitious money they would earn. However, the balloon was set to burst randomly between 1 and 128 inflations. If the balloon burst, they would lose any money earned in that trial. Participants were given 30 trials and their risk-taking score was measured by the mean inflations made on the trials the balloon didn't burst. After completing the 30 trials, participants took the STAI Y-1 a second time. At this point, a message appeared on the computer screen instructing the experimenter to turn off the eye-tracker. After the helmet or cap was removed, participants completed the STAI Y-1 form a third and final time. 
+
+Participants were then debriefed and asked to report on their bicycling and helmet-hearing frequency.
+
 
 ------
 
@@ -36,14 +37,12 @@ completionDate <- NA # copilot insert the date of final report completion (after
 
 "For this article you should focus on the findings reported in the results section.
 
-Specifically, you should attempt to reproduce all descriptive and inferential analyses reported in the text below and associated tables/figures:
+Specifically, you should attempt to reproduce all descriptive and inferential analyses reported in the text below and associated tables/figures:"
 
-> Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59 (Fig. 2a). Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b). These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66, time of measurement, F(2,156 = 2.37, p = .10, or an interaction between the two, F(2, 156) = 1.18, p = .31 (Fig. 2c). Note that we used the square roots of the anxiety scores for analyses because of the skew seen in Figure 2c. There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27), and extent of helmet use when bicycling (ρ = .06, p = .60)"
+> "Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59 (Fig. 2a). Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b). These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66, time of measurement, F(2,156 = 2.37, p = .10, or an interaction between the two, F(2, 156) = 1.18, p = .31 (Fig. 2c). Note that we used the square roots of the anxiety scores for analyses because of the skew seen in Figure 2c. There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27), and extent of helmet use when bicycling (ρ = .06, p = .60)"
 
 
 ------
-
-[PILOT/COPILOT DO NOT CHANGE THE CODE IN THE CHUNK BELOW]  
 
 ```{r global_options, include=FALSE}
 # sets up some formatting options for the R Markdown document
@@ -52,7 +51,6 @@ knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
 
 # Step 1: Load packages and prepare report object
 
-[PILOT/COPILOT Some useful packages are being loaded below. You can add any additional ones you might need too.]
 
 ```{r}
 # load packages
@@ -62,6 +60,8 @@ library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
 library(readxl) # import excel files
 library(CARPSreports) # custom report functions
 library(car)
+library(beanplot)
+
 ```
 
 
@@ -75,7 +75,6 @@ reportObject <- data.frame(dummyRow = TRUE, reportedValue = NA, obtainedValue = 
 ```{r}
 dataGW <- read.csv("/Users/luiza/OneDrive/Documentos/GitHub/CARPS_EXT_6-1-2016/data/GambleWalkerPsychologicalScienceData.csv", sep = "\t")
 
-#tried to open with read_csv and use separate (sep = " ") to arrange data into the appropriate columns and rows. It didn't work. Without the "sep" argument the data would separate at . for the BART variable. Is there a way to do this with tidyverse?
 ```
 
 # Step 3: Tidy data
@@ -106,14 +105,15 @@ BSub_means <- dataGW %>%
             sub_sd = sd(BART),
              n = n())
 
-BGrand_means <- Sub_means %>%
+BGrand_means <- BSub_means %>%
   group_by(Condition) %>%
   summarise(grand_mean = mean(sub_mean),
             condition_sd = sd(sub_mean),
             n = n())
 BSub_means
 BGrand_means
-#Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29)- CHECK
+
+# "Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29)"
 
 #SSS
 SSS_Sub_means <- dataGW %>%
@@ -131,7 +131,9 @@ SSS_Grand_means <- SSS_Sub_means %>%
 SSS_Sub_means
 SSS_Grand_means
 
-# "Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)" CHECK
+
+
+# "Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)"
 
 
 ```
@@ -146,13 +148,13 @@ options(contrasts=c("contr.sum","contr.poly")) #to adhere to the sum-to-zero con
 #BART
 tBART <- t.test(BART ~ Condition, data = dataGW, var.equal = TRUE)
 tBART
-#d = (M1−M2)/SD 
-#t(78) = 2.63, p = .01 Check
+
+#"Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59"
 
 #SSS
 TSSS <- t.test(SSS_total ~ Condition, data = dataGW)
 TSSS
-#Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b) Check
+#"Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73"
 
 #STAI
 
@@ -171,11 +173,7 @@ aov_STAI <- Anova(STAI_model, idata = data.frame(STAI_time), idesign = ~STAI_tim
 summary(aov_STAI)
 
 
-#These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66 CHECK
-
-#time of measurement, F(2,156 = 2.37, p = .10, ********? I found a significant effect of time of measurement in my analysis F(2,156 = 4.22 p = 0.02)
-
-#or an interaction between the two, F(2, 156) = 1.18, p = .31 CHECK
+#"These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66, time of measurement, F(2,156 = 2.37, p = .10, or an interaction between the two, F(2, 156) = 1.18, p = .31"
 
 corgender <- cor.test(x=dataGW$BART, y=dataGW$Sex)
 corgender
@@ -190,20 +188,28 @@ corrHel <- cor.test(x=dataGW$BART, y=dataGW$Helmet_Use_Likelihood, method = 'spe
 corrHel
 
  
-#There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, CHECK
+#There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27) and extent of helmet use when bicycling (ρ = .06, p = .60)
 
-#bicycling experience (ρ = .12, p = .27) CHECK
 
-#and extent of helmet use when bicycling (ρ = .06, p = .60) CHECK
+#Plots
+#Trying to reproduce plot with ggplot
+#ggplot(dataGW, aes(x= BART, group=Condition)) +
+         #geom_density() + geom_vline(aes(xintercept=mean(BART)),
+               #color="black", linetype="dashed", size=1) + expand_limits(x = c(-20,100)) + facet_grid(~Condition)
+
+
+beanplot(dataGW$BART ~ dataGW$Condition, horizontal = TRUE, col = c("lightgreen", "darkgreen", "black"), side = "second", xlab = "Rating", main = "BART", names = c("Helmet", "Cap"))
+
+beanplot(dataGW$SSS_total ~ dataGW$Condition, horizontal = TRUE, col = c("lightgreen", "darkgreen", "black"), side = "second", xlab = "Rating", main = "Sensation Seeking", names = c("Helmet", "Cap"))
+
+beanplot(dataGW_long$rating ~ dataGW_long$STAI + dataGW_long$Condition, horizontal = TRUE, col = c("lightgreen", "darkgreen", "black"), side = "second", xlab = "Rating", main = "Anxiety", names = c("Helmet.T1", "Helmet.T2", "Helmet.T3", "Hat.T1", "Hat.T2", "Hat.T3"), las = 1, log = "" )
 
 ```
 
 # Step 5: Conclusion
 
-
-[Please include a text summary describing your findings. If this reproducibility check was a failure, you should note any suggestions as to what you think the likely cause(s) might be.]
+This reproducibility check was successful. All descriptive and inferential statistics were reproduced.
   
-[PILOT/COPILOT ENTER RELEVANT INFORMATION BELOW]
 
 ```{r}
 Author_Assistance = FALSE # was author assistance provided? (if so, enter TRUE)
@@ -216,19 +222,18 @@ locus_typo <- 0 # how many discrete issues did you encounter that related to typ
 locus_specification <- 0 # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
 locus_analysis <- 0 # how many discrete issues did you encounter that related to errors in the authors' original analyses?
 locus_data <- 0 # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
-locus_unidentified <- 1 # how many discrete issues were there for which you could not identify the cause
+locus_unidentified <- 0 # how many discrete issues were there for which you could not identify the cause
 
 # How many of the above issues were resolved through author assistance?
 locus_typo_resolved <- NA # how many discrete issues did you encounter that related to typographical errors?
 locus_specification_resolved <- NA # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
 locus_analysis_resolved <- NA # how many discrete issues did you encounter that related to errors in the authors' original analyses?
 locus_data_resolved <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
-locus_unidentified_resolved <- 1 # how many discrete issues were there for which you could not identify the cause
+locus_unidentified_resolved <- NA # how many discrete issues were there for which you could not identify the cause
 
-Affects_Conclusion <- FALSE # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
+Affects_Conclusion <- NA # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
 ```
 
-[PILOT/COPILOT DOD NOT EDIT THE CODE CHUNK BELOW]
 
 ```{r}
 reportObject <- reportObject %>%
@@ -266,8 +271,6 @@ if(reportType == "final"){
 ```
 
 # Session information
-
-[This function will output information about the package versions used in this report:]
 
 ```{r session_info, include=TRUE, echo=TRUE, results='markup'}
 devtools::session_info()
