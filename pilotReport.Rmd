@@ -114,6 +114,10 @@ BSub_means
 BGrand_means
 
 # "Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29)"
+reportObject <- reproCheck(reportedValue = '40.40', obtainedValue = BGrand_means[1,]$grand_mean, valueType = 'mean')
+reportObject <- reproCheck(reportedValue = '31.06', obtainedValue = BGrand_means[2,]$grand_mean, valueType = 'mean')
+reportObject <- reproCheck(reportedValue = '18.18', obtainedValue = BGrand_means[1,]$condition_sd, valueType = 'sd')
+reportObject <- reproCheck(reportedValue = '13.29', obtainedValue = BGrand_means[2,]$condition_sd, valueType = 'sd')
 
 #SSS
 SSS_Sub_means <- dataGW %>%
@@ -134,7 +138,10 @@ SSS_Grand_means
 
 
 # "Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)"
-
+reportObject <- reproCheck(reportedValue = '23.23', obtainedValue = SSS_Grand_means[1,]$grand_mean, valueType = 'mean')
+reportObject <- reproCheck(reportedValue = '18.78', obtainedValue = SSS_Grand_means[2,]$grand_mean, valueType = 'mean')
+reportObject <- reproCheck(reportedValue = '7.00', obtainedValue = SSS_Grand_means[1,]$condition_sd, valueType = 'sd')
+reportObject <- reproCheck(reportedValue = '5.09', obtainedValue = SSS_Grand_means[2,]$condition_sd, valueType = 'sd')
 
 ```
 
@@ -151,10 +158,19 @@ tBART
 
 #"Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59"
 
+reportObject <- reproCheck(reportedValue = "78", obtainedValue = tBART$parameter, valueType = 'df')
+reportObject <- reproCheck(reportedValue = '2.63', obtainedValue = tBART$statistic, valueType = 't')
+reportObject <- reproCheck(reportedValue = '.01', obtainedValue = tBART$p.value, valueType = 'p')
+
 #SSS
 TSSS <- t.test(SSS_total ~ Condition, data = dataGW)
 TSSS
+
 #"Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73"
+
+reportObject <- reproCheck(reportedValue = "69.19", obtainedValue = TSSS$parameter, valueType = 'df')
+reportObject <- reproCheck(reportedValue = '3.24', obtainedValue = TSSS$statistic, valueType = 't')
+reportObject <- reproCheck(reportedValue = '.002', obtainedValue = TSSS$p.value, valueType = 'p')
 
 #STAI
 
@@ -181,16 +197,22 @@ corgender
 corrFreq <- cor.test(x=dataGW$BART, y=dataGW$Cycling_Frequency, method = 'spearman', exact = FALSE)
 corrFreq
 
-dataGW$Helmet_Use_Likelihood[dataGW$Cycling_Frequency == 1] <- NA
-dataGW_new <- dataGW$Helmet_Use_Likelihood[!is.na(dataGW$Helmet_Use_Likelihood)]
-
 corrHel <- cor.test(x=dataGW$BART, y=dataGW$Helmet_Use_Likelihood, method = 'spearman', exact=FALSE)
 corrHel
 
  
 #There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27) and extent of helmet use when bicycling (ρ = .06, p = .60)
 
+reportObject <- reproCheck(reportedValue = "78", obtainedValue = corgender$parameter, valueType = 'df')
+reportObject <- reproCheck(reportedValue = '0.45', obtainedValue = corgender$statistic, valueType = 't')
+reportObject <- reproCheck(reportedValue = '.66', obtainedValue = corgender$p.value, valueType = 'p')
 
+reportObject <- reproCheck(reportedValue = '.27', obtainedValue = corrFreq$p.value, valueType = 'p')
+reportObject <- reproCheck(reportedValue = '.12', obtainedValue = corrFreq$estimate, valueType = 'other')
+
+
+reportObject <- reproCheck(reportedValue = '.60', obtainedValue = corrHel$p.value, valueType = 'p')
+reportObject <- reproCheck(reportedValue = '.06', obtainedValue = corrHel$estimate, valueType = 'other')
 #Plots
 #Trying to reproduce plot with ggplot
 #ggplot(dataGW, aes(x= BART, group=Condition)) +
@@ -231,7 +253,7 @@ locus_analysis_resolved <- NA # how many discrete issues did you encounter that 
 locus_data_resolved <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
 locus_unidentified_resolved <- NA # how many discrete issues were there for which you could not identify the cause
 
-Affects_Conclusion <- NA # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
+Affects_Conclusion <- FALSE # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
 ```
 
 

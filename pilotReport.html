@@ -822,8 +822,15 @@ BSub_means</code></pre>
 ## 1 1               40.4         18.2    39
 ## 2 2               31.1         13.3    41</code></pre>
 <pre class="r"><code># &quot;Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29)&quot;
-
-#SSS
+reportObject &lt;- reproCheck(reportedValue = '40.40', obtainedValue = BGrand_means[1,]$grand_mean, valueType = 'mean')</code></pre>
+<pre><code>## [1] &quot;MATCH for mean. The reported value (40.4) and the obtained value (40.4) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '31.06', obtainedValue = BGrand_means[2,]$grand_mean, valueType = 'mean')</code></pre>
+<pre><code>## [1] &quot;MATCH for mean. The reported value (31.06) and the obtained value (31.06) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '18.18', obtainedValue = BGrand_means[1,]$condition_sd, valueType = 'sd')</code></pre>
+<pre><code>## [1] &quot;MATCH for sd. The reported value (18.18) and the obtained value (18.18) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '13.29', obtainedValue = BGrand_means[2,]$condition_sd, valueType = 'sd')</code></pre>
+<pre><code>## [1] &quot;MATCH for sd. The reported value (13.29) and the obtained value (13.29) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>#SSS
 SSS_Sub_means &lt;- dataGW %&gt;%
   group_by(ID, Condition) %&gt;%
   summarise(sub_mean = mean(SSS_total), 
@@ -858,7 +865,15 @@ SSS_Sub_means</code></pre>
 ##   &lt;fct&gt;          &lt;dbl&gt;        &lt;dbl&gt; &lt;int&gt;
 ## 1 1               23.2         7.00    39
 ## 2 2               18.8         5.09    41</code></pre>
-<pre class="r"><code># &quot;Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)&quot;</code></pre>
+<pre class="r"><code># &quot;Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)&quot;
+reportObject &lt;- reproCheck(reportedValue = '23.23', obtainedValue = SSS_Grand_means[1,]$grand_mean, valueType = 'mean')</code></pre>
+<pre><code>## [1] &quot;MATCH for mean. The reported value (23.23) and the obtained value (23.23) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '18.78', obtainedValue = SSS_Grand_means[2,]$grand_mean, valueType = 'mean')</code></pre>
+<pre><code>## [1] &quot;MATCH for mean. The reported value (18.78) and the obtained value (18.78) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '7.00', obtainedValue = SSS_Grand_means[1,]$condition_sd, valueType = 'sd')</code></pre>
+<pre><code>## [1] &quot;MATCH for sd. The reported value (7) and the obtained value (7) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '5.09', obtainedValue = SSS_Grand_means[2,]$condition_sd, valueType = 'sd')</code></pre>
+<pre><code>## [1] &quot;MATCH for sd. The reported value (5.09) and the obtained value (5.09) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
 </div>
 <div id="inferential-statistics" class="section level2">
 <h2>Inferential statistics</h2>
@@ -880,7 +895,13 @@ tBART</code></pre>
 ##        40.40308        31.06341</code></pre>
 <pre class="r"><code>#&quot;Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59&quot;
 
-#SSS
+reportObject &lt;- reproCheck(reportedValue = &quot;78&quot;, obtainedValue = tBART$parameter, valueType = 'df')</code></pre>
+<pre><code>## [1] &quot;MATCH for df. The reported value (78) and the obtained value (78) differed by 0%. Note that the obtained value was rounded to 0 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '2.63', obtainedValue = tBART$statistic, valueType = 't')</code></pre>
+<pre><code>## [1] &quot;MATCH for t. The reported value (2.63) and the obtained value (2.63) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '.01', obtainedValue = tBART$p.value, valueType = 'p')</code></pre>
+<pre><code>## [1] &quot;MATCH for p. The reported value (0.01) and the obtained value (0.01) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>#SSS
 TSSS &lt;- t.test(SSS_total ~ Condition, data = dataGW)
 TSSS</code></pre>
 <pre><code>## 
@@ -896,7 +917,13 @@ TSSS</code></pre>
 ##        23.23077        18.78049</code></pre>
 <pre class="r"><code>#&quot;Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73&quot;
 
-#STAI
+reportObject &lt;- reproCheck(reportedValue = &quot;69.19&quot;, obtainedValue = TSSS$parameter, valueType = 'df')</code></pre>
+<pre><code>## [1] &quot;MATCH for df. The reported value (69.19) and the obtained value (69.19) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '3.24', obtainedValue = TSSS$statistic, valueType = 't')</code></pre>
+<pre><code>## [1] &quot;MATCH for t. The reported value (3.24) and the obtained value (3.24) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '.002', obtainedValue = TSSS$p.value, valueType = 'p')</code></pre>
+<pre><code>## [1] &quot;MATCH for p. The reported value (0.002) and the obtained value (0.002) differed by 0%. Note that the obtained value was rounded to 3 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>#STAI
 
 STAI_labels &lt;- c(&quot;Condition&quot;, &quot;STAI_S_Y_PRE&quot;, &quot;STAI_S_Y_DURING&quot;, &quot;STAI_S_Y_POST&quot;)
 STAI_aov &lt;- dataGW[STAI_labels]
@@ -1067,24 +1094,34 @@ corrFreq</code></pre>
 ## sample estimates:
 ##       rho 
 ## 0.1235464</code></pre>
-<pre class="r"><code>dataGW$Helmet_Use_Likelihood[dataGW$Cycling_Frequency == 1] &lt;- NA
-dataGW_new &lt;- dataGW$Helmet_Use_Likelihood[!is.na(dataGW$Helmet_Use_Likelihood)]
-
-corrHel &lt;- cor.test(x=dataGW$BART, y=dataGW$Helmet_Use_Likelihood, method = 'spearman', exact=FALSE)
+<pre class="r"><code>corrHel &lt;- cor.test(x=dataGW$BART, y=dataGW$Helmet_Use_Likelihood, method = 'spearman', exact=FALSE)
 corrHel</code></pre>
 <pre><code>## 
 ##  Spearman's rank correlation rho
 ## 
 ## data:  dataGW$BART and dataGW$Helmet_Use_Likelihood
-## S = 40822, p-value = 0.133
+## S = 80264, p-value = 0.6016
 ## alternative hypothesis: true rho is not equal to 0
 ## sample estimates:
-##       rho 
-## 0.1854462</code></pre>
+##        rho 
+## 0.05925429</code></pre>
 <pre class="r"><code>#There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27) and extent of helmet use when bicycling (ρ = .06, p = .60)
 
-
-#Plots
+reportObject &lt;- reproCheck(reportedValue = &quot;78&quot;, obtainedValue = corgender$parameter, valueType = 'df')</code></pre>
+<pre><code>## [1] &quot;MATCH for df. The reported value (78) and the obtained value (78) differed by 0%. Note that the obtained value was rounded to 0 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '0.45', obtainedValue = corgender$statistic, valueType = 't')</code></pre>
+<pre><code>## [1] &quot;MATCH for t. The reported value (0.45) and the obtained value (0.45) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '.66', obtainedValue = corgender$p.value, valueType = 'p')</code></pre>
+<pre><code>## [1] &quot;MATCH for p. The reported value (0.66) and the obtained value (0.66) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '.27', obtainedValue = corrFreq$p.value, valueType = 'p')</code></pre>
+<pre><code>## [1] &quot;MATCH for p. The reported value (0.27) and the obtained value (0.27) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '.12', obtainedValue = corrFreq$estimate, valueType = 'other')</code></pre>
+<pre><code>## [1] &quot;MATCH for other. The reported value (0.12) and the obtained value (0.12) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '.60', obtainedValue = corrHel$p.value, valueType = 'p')</code></pre>
+<pre><code>## [1] &quot;MATCH for p. The reported value (0.6) and the obtained value (0.6) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>reportObject &lt;- reproCheck(reportedValue = '.06', obtainedValue = corrHel$estimate, valueType = 'other')</code></pre>
+<pre><code>## [1] &quot;MATCH for other. The reported value (0.06) and the obtained value (0.06) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>#Plots
 #Trying to reproduce plot with ggplot
 #ggplot(dataGW, aes(x= BART, group=Condition)) +
          #geom_density() + geom_vline(aes(xintercept=mean(BART)),
@@ -1121,7 +1158,7 @@ locus_analysis_resolved &lt;- NA # how many discrete issues did you encounter th
 locus_data_resolved &lt;- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
 locus_unidentified_resolved &lt;- NA # how many discrete issues were there for which you could not identify the cause
 
-Affects_Conclusion &lt;- NA # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.</code></pre>
+Affects_Conclusion &lt;- FALSE # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.</code></pre>
 <pre class="r"><code>reportObject &lt;- reportObject %&gt;%
   filter(dummyRow == FALSE) %&gt;% # remove the dummy row
   select(-dummyRow) %&gt;% # remove dummy row designation
