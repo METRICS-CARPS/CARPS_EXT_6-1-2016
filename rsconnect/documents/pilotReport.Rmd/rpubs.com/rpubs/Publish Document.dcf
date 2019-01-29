@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/436661/f513ac6a5039465eb6a2c076b4ad1a90
+bundleId: https://api.rpubs.com/api/v1/document/436661/f513ac6a5039465eb6a2c076b4ad1a90
+url: http://rpubs.com/Lsantos/436661
+when: 1541403112.96236

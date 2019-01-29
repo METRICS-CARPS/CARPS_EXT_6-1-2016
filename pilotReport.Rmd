@@ -1,0 +1,299 @@
+---
+title: "CARPS Reproducibility Report"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# Report Details
+
+```{r}
+articleID <- 'CARPS_EXT_6-1-2016'
+reportType <- 'Pilot' # specify whether this is the 'pilot' report or 'final' report
+pilotNames <- 'Luiza A. Santos'
+copilotNames <- 'Hannah Mieczkowski' 
+pilotTTC <- 360 # insert the pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
+copilotTTC <- 15 # insert the co-pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
+pilotStartDate <- 11/03/18 # insert the pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+copilotStartDate <- 11/04/18 # insert the co-pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+completionDate <- 11/04/18 # copilot insert the date of final report completion (after any necessary rounds of author assistance) in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+```
+
+------
+
+#### Methods summary: 
+
+Gamble and Walker (2016) tested whether unconscious perceptions of safety can increase risk-taking behavior, even when the safety measures are not directly related to the risk-taking domain. 
+
+Eighty participants were recruited to the study and were led to believe their eye movements were going to be recorded. After agreeing to participate, the were instructed to complete a series of computer-based measures. First, participants filled demographic questions (i.e., measures of age and gender) and completed the first of three measures of the State-Trait Anxiety Inventory (STAI) Form Y-1. Then, they were told the eye-tracking device had to be set up. Participants were then given an eye tracker that was either mounted to a helmet or to a baseball cap. In both the helmet and the cap conditions, the experimenter ran a fake calibration software to increase task’s believability. Participants then completed the Sensation Seeking Scale Form V (Zuckerman, Eysenck, & Eysenck, 1978) and were instructed to play the Balloon Analogue Risk Task (BART; Lejuez et al., 2002). In the BART, participants were told the more they pressed a certain computer key, the more an animated balloon would inflate, and the more fictitious money they would earn. The balloon was set to burst randomly between 1 and 128 inflations. If the balloon burst, they would lose any money earned in that trial. Participants were given 30 trials and their risk-taking score was measured by the mean inflations made on the trials the balloon didn't burst. After completing the 30 trials, participants took the STAI Y-1 a second time. At this point, a message appeared on the computer screen instructing the experimenter to turn off the eye-tracker. After the helmet or cap was removed, participants completed the STAI Y-1 form a third and final time. 
+
+Participants were then debriefed and asked to report on their bicycling and helmet-hearing frequency.
+
+
+------
+
+#### Target outcomes: 
+
+"For this article you should focus on the findings reported in the results section.
+
+Specifically, you should attempt to reproduce all descriptive and inferential analyses reported in the text below and associated tables/figures:"
+
+> "Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59 (Fig. 2a). Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73 (Fig. 2b). These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66, time of measurement, F(2,156 = 2.37, p = .10, or an interaction between the two, F(2, 156) = 1.18, p = .31 (Fig. 2c). Note that we used the square roots of the anxiety scores for analyses because of the skew seen in Figure 2c. There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27), and extent of helmet use when bicycling (ρ = .06, p = .60) (from Gamble & Walker p.291)"
+
+
+------
+
+```{r global_options, include=FALSE}
+# sets up some formatting options for the R Markdown document
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+# Step 1: Load packages and prepare report object
+
+
+```{r}
+# load packages
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+library(CARPSreports) # custom report functions
+library(car)
+library(beanplot)
+
+```
+
+
+```{r}
+# Prepare report object. This will be updated automatically by the reproCheck function each time values are compared
+reportObject <- data.frame(dummyRow = TRUE, reportedValue = NA, obtainedValue = NA, valueType = NA, percentageError = NA, comparisonOutcome = NA, eyeballCheck = NA)
+```
+
+# Step 2: Load data
+
+```{r}
+dataGW <- read.csv("/Users/luiza/OneDrive/Documentos/GitHub/CARPS_EXT_6-1-2016/data/GambleWalkerPsychologicalScienceData.csv", sep = "\t")
+
+```
+
+# Step 3: Tidy data
+
+```{r}
+dataGW_long <- dataGW %>%
+  gather(STAI, rating, starts_with("STAI"))
+dataGW_long
+```
+
+# Step 4: Run analysis
+
+## Pre-processing
+
+```{r}
+dataGW$Condition <- as.factor(dataGW$Condition)
+```
+
+## Descriptive statistics
+
+```{r}
+summary(dataGW)
+
+#BART
+BSub_means <- dataGW %>%
+  group_by(ID, Condition) %>%
+  summarise(sub_mean = mean(BART), 
+            sub_sd = sd(BART),
+             n = n())
+
+BGrand_means <- BSub_means %>%
+  group_by(Condition) %>%
+  summarise(grand_mean = mean(sub_mean),
+            condition_sd = sd(sub_mean),
+            n = n())
+BSub_means
+BGrand_means
+
+# "Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29)"
+reportObject <- reproCheck(reportedValue = '40.40', obtainedValue = BGrand_means[1,]$grand_mean, valueType = 'mean')
+reportObject <- reproCheck(reportedValue = '31.06', obtainedValue = BGrand_means[2,]$grand_mean, valueType = 'mean')
+reportObject <- reproCheck(reportedValue = '18.18', obtainedValue = BGrand_means[1,]$condition_sd, valueType = 'sd')
+reportObject <- reproCheck(reportedValue = '13.29', obtainedValue = BGrand_means[2,]$condition_sd, valueType = 'sd')
+
+#SSS
+SSS_Sub_means <- dataGW %>%
+  group_by(ID, Condition) %>%
+  summarise(sub_mean = mean(SSS_total), 
+            sub_sd = sd(SSS_total),
+             n = n())
+
+SSS_Grand_means <- SSS_Sub_means %>%
+  group_by(Condition) %>%
+  summarise(grand_mean = mean(sub_mean),
+            condition_sd = sd(sub_mean),
+            n = n())
+
+SSS_Sub_means
+SSS_Grand_means
+
+
+
+# "Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09)"
+reportObject <- reproCheck(reportedValue = '23.23', obtainedValue = SSS_Grand_means[1,]$grand_mean, valueType = 'mean')
+reportObject <- reproCheck(reportedValue = '18.78', obtainedValue = SSS_Grand_means[2,]$grand_mean, valueType = 'mean')
+reportObject <- reproCheck(reportedValue = '7.00', obtainedValue = SSS_Grand_means[1,]$condition_sd, valueType = 'sd')
+reportObject <- reproCheck(reportedValue = '5.09', obtainedValue = SSS_Grand_means[2,]$condition_sd, valueType = 'sd')
+
+```
+
+## Inferential statistics
+
+
+```{r}
+
+options(contrasts=c("contr.sum","contr.poly")) #to adhere to the sum-to-zero convention for effect weights
+
+#BART
+tBART <- t.test(BART ~ Condition, data = dataGW, var.equal = TRUE)
+tBART
+
+#"Wearing a helmet was associated with higher risk-taking scores (M = 40.40, SD = 18.18) than wearing a cap (M = 31.06, SD = 13.29), t(78) = 2.63, p = .01, d = 0.59"
+
+reportObject <- reproCheck(reportedValue = "78", obtainedValue = tBART$parameter, valueType = 'df')
+reportObject <- reproCheck(reportedValue = '2.63', obtainedValue = tBART$statistic, valueType = 't')
+reportObject <- reproCheck(reportedValue = '.01', obtainedValue = tBART$p.value, valueType = 'p')
+
+#SSS
+TSSS <- t.test(SSS_total ~ Condition, data = dataGW)
+TSSS
+
+#"Similarly, participants who wore a helmet reported higher sensation-seeking scores (M = 23.23, SD = 7.00) than participants who wore a cap (M = 18.78, SD = 5.09), Welch’s t(69.19) = 3.24, p = .002, d = 0.73"
+
+reportObject <- reproCheck(reportedValue = "69.19", obtainedValue = TSSS$parameter, valueType = 'df')
+reportObject <- reproCheck(reportedValue = '3.24', obtainedValue = TSSS$statistic, valueType = 't')
+reportObject <- reproCheck(reportedValue = '.002', obtainedValue = TSSS$p.value, valueType = 'p')
+
+#STAI
+
+STAI_labels <- c("Condition", "STAI_S_Y_PRE", "STAI_S_Y_DURING", "STAI_S_Y_POST")
+STAI_aov <- dataGW[STAI_labels]
+STAI_matrix <- as.matrix(STAI_aov[ ,2:4])
+STAI_model <- lm(sqrt(STAI_matrix) ~ 1 + Condition, STAI_aov)
+STAI_model
+
+STAI <- dataGW_long %>%
+  select("Condition", "STAI", "rating", "ID")
+
+STAI_time <- data.frame(as.factor(unique(STAI$STAI)))
+STAI_time <- unlist(STAI_time)
+aov_STAI <- Anova(STAI_model, idata = data.frame(STAI_time), idesign = ~STAI_time, type= "III")
+summary(aov_STAI)
+
+
+#"These effects cannot be explained by the helmet affecting anxiety, as anxiety did not change significantly as a function of condition, F(1, 78) = 0.19, p = .66, time of measurement, F(2,156 = 2.37, p = .10, or an interaction between the two, F(2, 156) = 1.18, p = .31"
+
+corgender <- cor.test(x=dataGW$BART, y=dataGW$Sex)
+corgender
+
+corrFreq <- cor.test(x=dataGW$BART, y=dataGW$Cycling_Frequency, method = 'spearman', exact = FALSE)
+corrFreq
+
+corrHel <- cor.test(x=dataGW$BART, y=dataGW$Helmet_Use_Likelihood, method = 'spearman', exact=FALSE)
+corrHel
+
+ 
+#There was no relationship between risk taking and gender, t(78) = 0.45, p = .66, bicycling experience (ρ = .12, p = .27) and extent of helmet use when bicycling (ρ = .06, p = .60)
+
+reportObject <- reproCheck(reportedValue = "78", obtainedValue = corgender$parameter, valueType = 'df')
+reportObject <- reproCheck(reportedValue = '0.45', obtainedValue = corgender$statistic, valueType = 't')
+reportObject <- reproCheck(reportedValue = '.66', obtainedValue = corgender$p.value, valueType = 'p')
+
+reportObject <- reproCheck(reportedValue = '.27', obtainedValue = corrFreq$p.value, valueType = 'p')
+reportObject <- reproCheck(reportedValue = '.12', obtainedValue = corrFreq$estimate, valueType = 'other')
+
+
+reportObject <- reproCheck(reportedValue = '.60', obtainedValue = corrHel$p.value, valueType = 'p')
+reportObject <- reproCheck(reportedValue = '.06', obtainedValue = corrHel$estimate, valueType = 'other')
+#Plots
+#Trying to reproduce plot with ggplot
+#ggplot(dataGW, aes(x= BART, group=Condition)) +
+         #geom_density() + geom_vline(aes(xintercept=mean(BART)),
+               #color="black", linetype="dashed", size=1) + expand_limits(x = c(-20,100)) + facet_grid(~Condition)
+
+
+beanplot(dataGW$BART ~ dataGW$Condition, horizontal = TRUE, col = c("lightgreen", "darkgreen", "black"), side = "second", xlab = "Rating", main = "BART", names = c("Helmet", "Cap"))
+
+beanplot(dataGW$SSS_total ~ dataGW$Condition, horizontal = TRUE, col = c("lightgreen", "darkgreen", "black"), side = "second", xlab = "Rating", main = "Sensation Seeking", names = c("Helmet", "Cap"))
+
+beanplot(dataGW_long$rating ~ dataGW_long$STAI + dataGW_long$Condition, horizontal = TRUE, col = c("lightgreen", "darkgreen", "black"), side = "second", xlab = "Rating", main = "Anxiety", names = c("Helmet.T1", "Helmet.T2", "Helmet.T3", "Hat.T1", "Hat.T2", "Hat.T3"), las = 1, log = "" )
+
+```
+
+# Step 5: Conclusion
+
+This reproducibility check was successful. All descriptive and inferential statistics were reproduced.
+  
+
+```{r}
+Author_Assistance = FALSE # was author assistance provided? (if so, enter TRUE)
+
+Insufficient_Information_Errors <- 0 # how many discrete insufficient information issues did you encounter?
+
+# Assess the causal locus (discrete reproducibility issues) of any reproducibility errors. Note that there doesn't necessarily have to be a one-to-one correspondance between discrete reproducibility issues and reproducibility errors. For example, it could be that the original article neglects to mention that a Greenhouse-Geisser correct was applied to ANOVA outcomes. This might result in multiple reproducibility errors, but there is a single causal locus (discrete reproducibility issue).
+
+locus_typo <- 0 # how many discrete issues did you encounter that related to typographical errors?
+locus_specification <- 0 # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
+locus_analysis <- 0 # how many discrete issues did you encounter that related to errors in the authors' original analyses?
+locus_data <- 0 # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
+locus_unidentified <- 0 # how many discrete issues were there for which you could not identify the cause
+
+# How many of the above issues were resolved through author assistance?
+locus_typo_resolved <- NA # how many discrete issues did you encounter that related to typographical errors?
+locus_specification_resolved <- NA # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
+locus_analysis_resolved <- NA # how many discrete issues did you encounter that related to errors in the authors' original analyses?
+locus_data_resolved <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
+locus_unidentified_resolved <- NA # how many discrete issues were there for which you could not identify the cause
+
+Affects_Conclusion <- FALSE # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
+```
+
+
+```{r}
+reportObject <- reportObject %>%
+  filter(dummyRow == FALSE) %>% # remove the dummy row
+  select(-dummyRow) %>% # remove dummy row designation
+  mutate(articleID = articleID) %>% # add variables to report 
+  select(articleID, everything()) # make articleID first column
+
+# decide on final outcome
+if(any(reportObject$comparisonOutcome %in% c("MAJOR_ERROR", "DECISION_ERROR")) | Insufficient_Information_Errors > 0){
+  finalOutcome <- "Failure without author assistance"
+  if(Author_Assistance == T){
+    finalOutcome <- "Failure despite author assistance"
+  }
+}else{
+  finalOutcome <- "Success without author assistance"
+  if(Author_Assistance == T){
+    finalOutcome <- "Success with author assistance"
+  }
+}
+
+# collate report extra details
+reportExtras <- data.frame(articleID, pilotNames, copilotNames, pilotTTC, copilotTTC, pilotStartDate, copilotStartDate, completionDate, Author_Assistance, finalOutcome, Insufficient_Information_Errors, locus_typo, locus_specification, locus_analysis, locus_data, locus_unidentified, locus_typo_resolved, locus_specification_resolved, locus_analysis_resolved, locus_data_resolved, locus_unidentified_resolved)
+
+# save report objects
+if(reportType == "pilot"){
+  write_csv(reportObject, "pilotReportDetailed.csv")
+  write_csv(reportExtras, "pilotReportExtras.csv")
+}
+
+if(reportType == "final"){
+  write_csv(reportObject, "finalReportDetailed.csv")
+  write_csv(reportExtras, "finalReportExtras.csv")
+}
+```
+
+# Session information
+
+```{r session_info, include=TRUE, echo=TRUE, results='markup'}
+devtools::session_info()
+```
